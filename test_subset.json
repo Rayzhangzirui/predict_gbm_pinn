@@ -1,0 +1,30 @@
+{
+  "dataset_id": "predict_gbm",
+  "root_dir": "/home/ziruz16/predictgbm/data/",
+  "patients": [
+    {
+      "patient_id": "GLIODIL-data_001",
+      "patient_dir": "/home/ziruz16/predictgbm/data/GLIODIL/data_001",
+      "derivatives": {
+        "brain_mask": "/home/ziruz16/predictgbm/data/GLIODIL/data_001/t1c_bet_mask.nii.gz",
+        "tumor_seg": "/home/ziruz16/predictgbm/data/GLIODIL/data_001/tumor_seg.nii.gz",
+        "recurrence_seg": "/home/ziruz16/predictgbm/data/GLIODIL/data_001/recurrence_preop.nii.gz",
+        "csf_pbmap": "/home/ziruz16/predictgbm/data/GLIODIL/data_001/csf_pbmap.nii.gz",
+        "gm_pbmap": "/home/ziruz16/predictgbm/data/GLIODIL/data_001/gm_pbmap.nii.gz",
+        "wm_pbmap": "/home/ziruz16/predictgbm/data/GLIODIL/data_001/wm_pbmap.nii.gz"
+      }
+    },
+    {
+      "patient_id": "GLIODIL-data_013",
+      "patient_dir": "/home/ziruz16/predictgbm/data/GLIODIL/data_013",
+      "derivatives": {
+        "brain_mask": "/home/ziruz16/predictgbm/data/GLIODIL/data_013/t1c_bet_mask.nii.gz",
+        "tumor_seg": "/home/ziruz16/predictgbm/data/GLIODIL/data_013/tumor_seg.nii.gz",
+        "recurrence_seg": "/home/ziruz16/predictgbm/data/GLIODIL/data_013/recurrence_preop.nii.gz",
+        "csf_pbmap": "/home/ziruz16/predictgbm/data/GLIODIL/data_013/csf_pbmap.nii.gz",
+        "gm_pbmap": "/home/ziruz16/predictgbm/data/GLIODIL/data_013/gm_pbmap.nii.gz",
+        "wm_pbmap": "/home/ziruz16/predictgbm/data/GLIODIL/data_013/wm_pbmap.nii.gz"
+      }
+    }
+  ]
+}
