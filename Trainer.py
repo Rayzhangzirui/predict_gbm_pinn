@@ -159,9 +159,10 @@ class Trainer():
 
         start = time.time()
 
-        # reset memeory usage
-        torch.cuda.reset_peak_memory_stats()
-        torch.cuda.reset_max_memory_allocated()
+        # reset memory usage
+        if torch.cuda.is_available():
+            torch.cuda.reset_peak_memory_stats()
+            torch.cuda.reset_max_memory_allocated()
         
         # for running
         try:    
@@ -280,5 +281,4 @@ class Trainer():
             self.save_net(prefix=prefix)
 
     
-
 

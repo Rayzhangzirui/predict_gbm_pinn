@@ -1,0 +1,4 @@
+# Don't commit credentials
+.env
+*.token
+*.key

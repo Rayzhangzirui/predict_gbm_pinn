@@ -70,6 +70,7 @@ def plot_grid_imshow_panels(
         fpath = os.path.join(savedir, fname)
         fig.savefig(fpath, dpi=300, bbox_inches='tight')
         print(f'fig saved to {fpath}')
+        plt.close(fig)  # Close figure to free memory
 
     return fig
 
@@ -115,6 +116,7 @@ def plot_grid_contour_overlay(
         fpath = os.path.join(savedir, fname)
         fig.savefig(fpath, dpi=300, bbox_inches='tight')
         print(f'fig saved to {fpath}')
+        plt.close(fig)  # Close figure to free memory
 
     return fig, ax
 
@@ -223,6 +225,7 @@ def plot_contour_over_seg(
         fpath = os.path.join(savedir, fname)
         fig.savefig(fpath, dpi=300, bbox_inches='tight')
         print(f'fig saved to {fpath}')
+        plt.close(fig)  # Close figure to free memory
 
     return fig, ax
 
@@ -320,6 +323,7 @@ def plot_plan_comparison(
         fpath = os.path.join(savedir, fname)
         fig.savefig(fpath, dpi=300, bbox_inches='tight')
         print(f'fig saved to {fpath}')
+        plt.close(fig)  # Close figure to free memory
 
     return fig, axes
 
@@ -390,6 +394,7 @@ def plot_density_over_seg(
         fpath = os.path.join(savedir, fname)
         fig.savefig(fpath, dpi=300, bbox_inches='tight')
         print(f'fig saved to {fpath}')
+        plt.close(fig)  # Close figure to free memory
 
     return fig, ax
 

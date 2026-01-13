@@ -53,6 +53,9 @@ def print_statistics(epoch, **losses):
     loss_strs = ', '.join(f'{name}: {value:.3e}' for name, value in losses.items())
     print(f'Epoch {epoch}, {loss_strs}')
 
+def is_metal_available():
+    return hasattr(torch.backends, "mps") and torch.backends.mps.is_available()
+
 
 
 # Function to set device priority: CUDA > MPS > CPU
@@ -68,7 +71,7 @@ def set_device(name = None):
             device = torch.device('cuda')
             # Check for MPS (Metal) availability
         elif is_metal_available():
-            device = torch.device('metal')
+            device = torch.device('mps')
         # Default to CPU
         else:
             device = torch.device('cpu')
@@ -289,6 +292,5 @@ def error_logging_decorator(func):
             print(f"Error in function '{func.__name__}': {e}")
             print(tb)
     return wrapper
-
 
 

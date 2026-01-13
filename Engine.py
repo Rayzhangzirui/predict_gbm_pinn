@@ -30,7 +30,6 @@ class Engine:
         self.restore_artifacts = {}
         self.logger = None
 
-        self.logger = None
         self.trainer = None
         self.pdata = {} # patient related data
         self.z_slice = None # For 3D visualization
@@ -200,17 +199,17 @@ class Engine:
         # Calculate interesting z-slices for visualization
         self.slices_to_plot = []
         
-        # 1. Max Pre-op TC (seg in [1, 3])
+        # Max Pre-op TC (seg in [1, 3])
         mask_tc_pre = np.isin(seg, [1, 3])
         z_tc_pre = np.argmax(np.sum(mask_tc_pre, axis=(0, 1)))
         self.slices_to_plot.append((z_tc_pre, 'max_pre_tc'))
         
-        # 2. Max Pre-op WT (seg in [1, 2, 3])
+        # Max Pre-op WT (seg in [1, 2, 3])
         mask_wt_pre = np.isin(seg, [1, 2, 3])
         z_wt_pre = np.argmax(np.sum(mask_wt_pre, axis=(0, 1)))
         self.slices_to_plot.append((z_wt_pre, 'max_pre_wt'))
         
-        # 3. Max Post-op TC/WT (rec)
+        # Max Post-op TC/WT (rec)
         if rec is not None:
             if np.max(rec) > 1:
                 mask_tc_post = np.isin(rec, [1, 3])

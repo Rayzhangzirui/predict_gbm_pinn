@@ -1,0 +1,7 @@
+numpy
+scipy
+nibabel
+matplotlib
+loguru
+torchinfo
+torchtnt

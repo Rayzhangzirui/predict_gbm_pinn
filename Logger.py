@@ -3,7 +3,6 @@
 import sys
 import os
 from util import *
-from config import *
 try:
     import mlflow
     from MlflowHelper import *
@@ -55,13 +54,13 @@ class Logger:
             print("tracking_uri:", mlflow.get_tracking_uri())
             print("artifact_uri:", mlflow.get_artifact_uri())
 
+        else:
+            self.stdout_logger = StdoutLogger(precision=6)
 
         # Determine save directory
         self.save_dir = self._determine_save_dir()
         print(f"Artifacts will be saved to: {self.save_dir}")
 
-        if self.opts['use_stdout']:
-            self.stdout_logger = StdoutLogger(precision=6)
         
 
         
@@ -122,7 +121,7 @@ class Logger:
             return get_active_artifact_dir()
         else:
             # Default local structure
-            dpath = os.path.join(RUNS, self.opts['experiment_name'], self.opts['run_name'])
+            dpath = os.path.join('./runs', self.opts['experiment_name'], self.opts['run_name'])
             os.makedirs(dpath, exist_ok=True)
             return dpath
 

@@ -123,9 +123,13 @@ class Options(BaseOption):
             # use small network for testing
             self.opts['nn_opts']['depth'] = 4
             self.opts['nn_opts']['width'] = 2
-            self.opts['train_opts']['iter_init'] = 10
-            self.opts['train_opts']['iter_inv'] = 10
+            self.opts['train_opts']['iter_init'] = 3
+            self.opts['train_opts']['iter_inv'] = 3
             self.opts['train_opts']['print_every'] = 1
+            # shrink batches/time-slices to keep CPU tests lightweight
+            self.opts['pde_opts']['dat_batch_size'] = 10
+            self.opts['pde_opts']['res_batch_size'] = 20
+            self.opts['pde_opts']['m_times'] = 10
             
         if 'local' in self.opts['flags']:
             # use local logger

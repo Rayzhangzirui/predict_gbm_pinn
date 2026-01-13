@@ -13,14 +13,16 @@ from Options import Options
 
 class PINNGBMModel:
     def __init__(
-        self, 
-        algorithm: str = "pinngbm", 
-        cuda_device: Optional[str] = "0", 
-        force_cpu: bool = False
+        self,
+        algorithm: str = "pinngbm",
+        cuda_device: Optional[str] = "0",
+        force_cpu: bool = False,
+        flags: Optional[str] = None,
     ):
         self.algorithm = algorithm
         self.cuda_device = cuda_device
         self.force_cpu = force_cpu
+        self.flags = flags
 
     def predict_single(
         self,
@@ -33,7 +35,7 @@ class PINNGBMModel:
         log_file: Optional[Path] = None,
     ) -> None:
         logger.info(f"Starting PINN-GBM prediction for output: {outdir}")
-        
+
         # 1. Configure Options
         gbmopts = Options()
         # Set device
@@ -47,15 +49,15 @@ class PINNGBMModel:
         gbmopts.opts['logger_opts']['use_tmp'] = True
         gbmopts.opts['logger_opts']['use_stdout'] = True
         gbmopts.opts['skip_fig'] = True
-        
-        # temporary for debugging
-        gbmopts.opts['flags'] = 'small'
+
+        if self.flags is not None:
+            gbmopts.opts['flags'] = self.flags
 
         # for debugging with mlflow
         # gbmopts.opts['logger_opts']['use_mlflow'] = True
         # gbmopts.opts['logger_opts']['experiment_name'] = 'pipelinetest'
         # get the last part of outdir as run_name
-        # gbmopts.opts['logger_opts']['run_name'] = outdir.name 
+        # gbmopts.opts['logger_opts']['run_name'] = outdir.name
 
 
         # 2. Prepare Input Data
@@ -63,25 +65,25 @@ class PINNGBMModel:
         gbmopts.opts['dataset_opts']['wm_file'] = str(wm)
         gbmopts.opts['dataset_opts']['csf_file'] = str(csf)
         gbmopts.opts['dataset_opts']['segpre_file'] = str(tumorseg)
-        
+
         # 3. Initialize and Run Engine
         try:
             gbmopts.process_options()
             engine = Engine(gbmopts.opts)
-            
+
             # Execute pipeline steps explicitly
             engine.run()
             phiu_final = engine.vdict['upred_fdm'][..., -1]
-            
+
             # 4. Convert Output to NIfTI
             self._save_nifti_output(phiu_final, outdir, wm, self.algorithm)
 
             engine.logger.close()
-            
+
         except Exception as e:
             logger.error(f"PINN-GBM execution failed: {e}")
             raise e
-                
+
         logger.info(f"Finished PINN-GBM prediction. Output saved to {outdir}")
 
     def _save_nifti_output(self, u_pred: np.ndarray, outdir: Path, ref_nifti_path: Path, algorithm: str):
@@ -92,14 +94,15 @@ class PINNGBMModel:
 
         # Create NIfTI image
         nifti_img = nib.Nifti1Image(u_pred, affine, header)
-        
+
         # Save as expected by PredictGBM structure
         final_out_dir = outdir / "growth_models" / algorithm
         final_out_dir.mkdir(parents=True, exist_ok=True)
         out_name = final_out_dir / f"{algorithm}_pred.nii.gz"
-        
+
         nib.save(nifti_img, out_name)
         logger.info(f"Saved NIfTI prediction to {out_name}")
+
 
 def predict_tumor_growth(
     tumorseg_file: Path,
@@ -109,13 +112,20 @@ def predict_tumor_growth(
     model_id: str,
     outdir: Path,
     cuda_device: Optional[str] = "0",
+    force_cpu: bool = False,
+    flags: Optional[str] = None,
 ) -> None:
     """
     Predict tumor cell concentration with PINNGBM model.
     """
     logger.info(f"Starting growth prediction with {model_id}.")
 
-    model = PINNGBMModel(algorithm=model_id, cuda_device=cuda_device)
+    model = PINNGBMModel(
+        algorithm=model_id,
+        cuda_device=cuda_device,
+        force_cpu=force_cpu,
+        flags=flags,
+    )
     model.predict_single(
         gm=gm_file,
         wm=wm_file,
